@@ -1,0 +1,26 @@
+Each node has 9 preset frames:
+
+
+imagePresets = ["00000:00000:00000:00000:00000", 
+                "99999:99999:99999:99999:99999", 
+                "55555:99999:99999:99999:99999", 
+                "59999:59999:59999:59999:59999",
+                "99995:99995:99995:99995:99995",
+                "59995:59995:59995:59995:59995",
+                "55555:59999:59999:59999:59999",
+                "55555:99995:99995:99995:99995",
+                "55555:59995:59995:59995:59995"]
+                
+                
+imagePresets[0] = blank screen
+imagePresets[1] = All pixels on ('block')
+imagePresets[2] = block with top border
+imagePresets[3] = block with border on left side
+imagePresets[4] = block with border on right side
+imagePresets[5] = block with border on right and left side
+imagePresets[6] = block with border on top and left
+imagePresets[7] = block with border on top and right
+imagePresets[8] = block with border on top, left and left
+
+As blocks collect at the bottom and stack they are 'separated' by a border of lighter pixels.
+Borders are above, left and right - we don't bother with below (no need - if they stack the one below will have a border on its top)
