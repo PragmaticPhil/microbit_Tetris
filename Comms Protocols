@@ -1,0 +1,29 @@
+
+The server will send 2 types of data:
+
+  
+
+Type0: Server Instructions:
+
+
+  Examples:
+  
+  1 - Setting matrix size (which tells hardcoded nodes where they sit on the matrix)
+  tX0620305 = tX  0   62  03  05
+
+
+Type1: Screen Update Instructions:
+
+    For usual game play each node has 2 states:
+    ... OFF (no pixels burning)
+    ... ON  (all pixel burning)
+    
+    So, each frame update the server just needs to tell nodes whether to CHANGE!
+    Given that all that happens on screen is a piece moves, this means each frame update will include
+    not more than 5 rows of data.
+    
+    This type of instruction looks like this:
+    
+      tX12005100101
+      tX  -  1  -  20  -  05  -  100101
+      ServerID - message type - server instruction - target row - row mask
