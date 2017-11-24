@@ -27,3 +27,27 @@ Type1: Screen Update Instructions:
       tX12005100101
       tX  -  1  -  20  -  05  -  100101
       ServerID - message type - server instruction - target row - row mask
+
+    Now, to smoothly scroll downwards we need to advance the block down the matrix 1 line at a time
+    to do this the Server Instruction field above encoded FRAME.
+    Each node has a buffer of images - each one a block that has shifted down by 1 row relative to the previous one:
+    
+    F0 =  *****
+          *****
+          *****
+          *****
+          *****
+          
+    F1 =  -----
+          *****
+          *****
+          *****
+          *****
+
+    F2 =  -----
+          -----
+          *****
+          *****
+          *****
+
+etc
