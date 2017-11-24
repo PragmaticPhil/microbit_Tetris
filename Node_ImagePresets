@@ -1,16 +1,27 @@
-Each node has 9 preset frames:
+Each node has a variety of 9 preset frames.
+This is because node code for this is very light, and by storing these values in the node we take some load of the server
+and limit the amount of information we need to transfer over radio:
+
+... ANIMATION FRAMES:
+Sideways movement is in block of 1 micro:bit wide, which removes any need for sideways scrolling
+However, the movement DOWN the matrix needs to be smooth.
+
+So, we need a representation of each block for each of 5 locations running 'down' the micro:bit:
 
 
-imagePresets = ["00000:00000:00000:00000:00000", 
-                "99999:99999:99999:99999:99999", 
-                "55555:99999:99999:99999:99999", 
-                "59999:59999:59999:59999:59999",
-                "99995:99995:99995:99995:99995",
-                "59995:59995:59995:59995:59995",
-                "55555:59999:59999:59999:59999",
-                "55555:99995:99995:99995:99995",
-                "55555:59995:59995:59995:59995"]
-                
+... BLOCKS WITH BORDERS
+When blocks come to rest at the bottom of the screen we draw a boarder around them.  
+This will ensure that the separate shapes are still discrenable when they come to rest:
+
+image_BorderPresets =       [   "00000:00000:00000:00000:00000", 
+                                "99999:99999:99999:99999:99999", 
+                                "55555:99999:99999:99999:99999", 
+                                "59999:59999:59999:59999:59999",
+                                "99995:99995:99995:99995:99995",
+                                "59995:59995:59995:59995:59995",
+                                "55555:59999:59999:59999:59999",
+                                "55555:99995:99995:99995:99995",
+                                "55555:59995:59995:59995:59995"]
                 
 imagePresets[0] = blank screen
 imagePresets[1] = All pixels on ('block')
