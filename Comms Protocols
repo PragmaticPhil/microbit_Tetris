@@ -18,15 +18,18 @@ Type1: Screen Update Instructions:
     ... OFF (no pixels burning)
     ... ON  (all pixel burning)
     
-    So, each frame update the server just needs to tell nodes whether to CHANGE!
+    So, each frame update the server just needs to tell nodes whether to show a block or nothing
     Given that all that happens on screen is a piece moves, this means each frame update will include
     not more than 5 rows of data.
+    
+    As the block moves down the screen it scrolls smoothly, so with each new animation frame 1 row of pixels is switched off
+    We have to pass in frame number (0 -4) so node knows which block to show:
     
     This type of instruction looks like this:
     
       tX12005100101
-      tX  -  1  -  20  -  05  -  100101
-      ServerID - message type - server instruction - target row - row mask
+      tX  -  1  -  20  -  3  -  05  -  100101
+      ServerID - message type - server instruction - animation frame - target row - row mask
 
     Now, to smoothly scroll downwards we need to advance the block down the matrix 1 line at a time
     to do this the Server Instruction field above encoded FRAME.
