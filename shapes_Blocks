@@ -1,4 +1,5 @@
 
+
 Every SHAPE is made up of a number of BLOCKS
   each block is 5x5 pixels wide
   to enable smooth downward scrolling, 4 frames out of every 5 blocks will be rendered on 2 micro:bits
@@ -29,3 +30,26 @@ Clearly the LOCATION of the block in the shape determines its visual behaviour i
 Therefore when we dfeine our shapes (in terms of the blocks that make them up) we also need to define the TYPEs of blocks
 The real complication is going to be the additional row!
  
+
+DEFINITION OF EACH DIFFERENT BLOCK TYPE
+
+blockType = 1:  Internal block.
+                Fading is never applied.
+
+blockType = 2:  Top block
+                Only ever fades OUT
+                Sits on top of another block which 'cancels' out the fade in
+                Block below is always shown on a full micro:bit screen.
+
+blockType = 3:  Bottom block 
+                Only ever fades IN
+                Sits BELOW another block which 'cancels' out the fade out
+                Block above is always shown on a full micro:bit screen.
+
+blockType = 4:  Top and bottom block
+                Fades in an out simultaneously
+
+blockType = 5:  Blank block 
+                An empty block within the defined rectangle of the shape.
+                Index = 5 (rather than zero) so we don't have to worry about leading zeros (shapes stored as integers)
+                
