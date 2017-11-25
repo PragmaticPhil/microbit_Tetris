@@ -1,0 +1,31 @@
+
+Every SHAPE is made up of a number of BLOCKS
+  each block is 5x5 pixels wide
+  to enable smooth downward scrolling, 4 frames out of every 5 blocks will be rendered on 2 micro:bits
+  from the perspective of the shape, the location of each block is important:
+  
+  Consider what would happen if the shape below were travelling DOWN the screen.  
+  Assume already fully on-screen and located snugly in micro:bits (so at frame 0).
+  The shape is about to move to the next position, frame 0...
+  
+                            *         (row 1)
+                            ***
+                              *
+  
+  Firstly note that the shape will now run over 4 rows in the next frame
+  
+  ROW 3:  The single block will FADE IN to the first row of the micro:bit below its current position
+          The pixels from the block above (in row 2) will fade into the micro:bit this block is leaving
+          SO - the fade out of block in row 3 and the fade in in the block in row 2 will cancel each other out.
+
+  ROW 2:  The first block will fade in to the first row below.
+          Similar to row 3 - as the first block fades out, so the block above fades in.
+          The second block will fade in to the row below, and fade out of the row above.
+          The third block will fade out of the row above (see row 3)
+          
+  ROW 3:  This block will only be seen to fade out
+  
+Clearly the LOCATION of the block in the shape determines its visual behaviour ito fading in / out
+Therefore when we dfeine our shapes (in terms of the blocks that make them up) we also need to define the TYPEs of blocks
+The real complication is going to be the additional row!
+ 
