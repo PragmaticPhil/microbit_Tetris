@@ -1,7 +1,13 @@
 
-The server will send 2 types of data:
-
-  
+The server will send x types of data:
+  Type0:  Server Instructions.
+          Instructions pertaining to all nodes.
+  Type1:  Screen Animation Update Instructions.
+          Info telling node what to display.  Node 'interprets' based on animationFrame
+  Type2:  Screen static update instructions FROM LIBRARY 2.
+          Info telling node what to display - node just obeys.
+  Type3:  Screen static update instructions FROM LIBRARY 3.
+          Info telling node what to display - node just obeYS
 
 Type0: Server Instructions:
 
@@ -12,7 +18,7 @@ Type0: Server Instructions:
   tX0620305 = tX  0   62  03  05
 
 
-Type1: Screen Update Instructions:
+Type1: Screen Animation Update Instructions:
 
     For usual game play each node has 2 states:
     ... OFF (no pixels burning)
