@@ -1,7 +1,7 @@
 
 
 Every SHAPE is made up of a number of BLOCKS
-  each block is 5x5 pixels wide
+  each block is 5x5 pixels wide (a micro:bit)
   to enable smooth downward scrolling, 4 frames out of every 5 blocks will be rendered on 2 micro:bits
   from the perspective of the shape, the location of each block is important:
   
@@ -28,7 +28,19 @@ Every SHAPE is made up of a number of BLOCKS
   
 Clearly the LOCATION of the block in the shape determines its visual behaviour ito fading in / out
 Therefore when we dfeine our shapes (in terms of the blocks that make them up) we also need to define the TYPEs of blocks
-The real complication is going to be the additional row!
+The real complication is the additional row... which we handle thusly.
+
+Consider our shape above again... it can be represented thusly:
+
+                            299
+                            322
+                            OO3
+                            99O
+                            
+  THIS is how we represent it in code:
+  - each integer above represents a differrent type of block
+  - each shape has 1 more row that it would appear to have
+  - block types are defined below
  
 
 DEFINITION OF EACH DIFFERENT BLOCK TYPE
@@ -38,7 +50,8 @@ blockType = 1:  Internal block.
 
 blockType = 2:  Top block
                 Only ever fades OUT
-                Sits on top of another block which 'cancels' out the fade in
+                ALWAYS sits on top of another block.
+                As it scrolls down the Top block fades into the block below, cancelling the fade out of that block
                 Block below is always shown on a full micro:bit screen.
 
 blockType = 3:  Bottom block 
@@ -49,7 +62,13 @@ blockType = 3:  Bottom block
 blockType = 4:  Top and bottom block
                 Fades in an out simultaneously
 
-blockType = 5:  Blank block 
+blockType = 5:  Blank BUFFER block 
                 An empty block within the defined rectangle of the shape.
-                Index = 5 (rather than zero) so we don't have to worry about leading zeros (shapes stored as integers)
+                This block is the block that a block above WILL MOVE INTO as it moves down.
+                So, at frame 0 it is blank, BUT IT FILLS IN as animation frame increases to 5
+                THESE blocks are used for vertical collision detection.
+                THEY ARE KEY - do not confuse them with proper blank blocks
+                
+blockType = 9:  A blank block.  Just a blank... always render with a full blank.
+                Index = 9 (rather than zero) so we don't have to worry about leading zeros (shapes stored as integers)
                 
