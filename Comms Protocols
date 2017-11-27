@@ -20,8 +20,9 @@ Type1: Screen Animation Update Instructions:
       Server instruction codes:
       20... animate by scrolling (used to transfer info on block as it is falling down)
       21... clear pixels from whole row
-      22... play from appropriate library (blocks at rest at bottom)
-      23... play from appropriate library (blocks dissolving when tetris is achieved.
+      22... destroy row (target node plays free form from appropriate library - blocks dissolving when tetris is achieved).
+      23... play from appropriate library (blocks at rest at bottom)
+      24... play from appropriate library (blocks dissolving when tetris is achieved.
      
      EXAMPLES:
      
@@ -44,7 +45,15 @@ Type1: Screen Animation Update Instructions:
         21  = message is telling all nodes in a row to show a blank
         1   = Arb (not relevant for code 21 messages)
         03  = message is aimed at row 3
-
+ 
+     22:
+      tX122009
+      tX 1 22 0 09
+        tX  = message is from server
+        1   = message contains image info
+        22  = message is telling all nodes in a row to begin their destruction sequence (which plays out without automatically)
+        0   = Arb (not relevant for code 22 messages)
+        09  = message is aimed at row 9
 
 
 NOTES      
