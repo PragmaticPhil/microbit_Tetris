@@ -1,14 +1,11 @@
 
-The server will send x types of data:
+The server will send 2 types of data:
   Type0:  Server Instructions.
           Instructions pertaining to all nodes.
-  Type1:  Screen Animation Update Instructions.
+  Type1:  Screen Update Instructions.
           Info telling node what to display.  Node 'interprets' based on animationFrame
-  Type2:  Screen static update instructions FROM LIBRARY 2.
-          Info telling node what to display - node just obeys.
-  Type3:  Screen static update instructions FROM LIBRARY 3.
-          Info telling node what to display - node just obeYS
-
+          Each Server Instruction code effectively tells the nodes to use a different library of preset images.
+  
 Type0: Server Instructions:
 
 
@@ -19,6 +16,38 @@ Type0: Server Instructions:
 
 
 Type1: Screen Animation Update Instructions:
+      
+      Server instruction codes:
+      20... animate by scrolling (used to transfer info on block as it is falling down)
+      21... clear pixels from whole row
+      22... play from appropriate library (blocks at rest at bottom)
+      23... play from appropriate library (blocks dissolving when tetris is achieved.
+     
+     EXAMPLES:
+     
+     20:
+      tX120103000234500
+      tX 1 20 1 03 000234500
+        tX  = message is from server
+        1   = message contains image info
+        20  = message contains info for nodes to draw a shape, with animation for scrolling. 
+              This effectively points to a specific library on the node (node has several preset libs of images)
+        1   = current frame (there are 5 in total)
+        03  = message is aimed at row 3
+        etc = mask for the row - integers are references to image libs on the node (so: node uses imageLib[20][mask])
+     
+     21:
+      tX121103
+      tX 1 21 1 03
+        tX  = message is from server
+        1   = message contains image info
+        21  = message is telling all nodes in a row to show a blank
+        1   = Arb (not relevant for code 21 messages)
+        03  = message is aimed at row 3
+
+
+
+NOTES      
 
     For usual game play each node has 2 states:
     ... OFF (no pixels burning)
