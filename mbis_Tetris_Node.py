@@ -82,7 +82,10 @@ def processImageMessage(rawMsg):                                    #   tX120051
  
 def displayCorrectImage(blockType, animationFrame):
     print("Block type = " + str(blockType))
-    if((blockType == 0) or (blockType == 9)):   
+
+    if(blockType == 0): return
+
+    if(blockType == 9):
         display.clear()
         return
 
