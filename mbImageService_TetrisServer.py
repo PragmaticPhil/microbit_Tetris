@@ -109,6 +109,7 @@ def moveShapeDown():
         currentAnimationRow = 0
         if(checkVerticalCollision()):
             printBoard()
+            checkForTetris(totalRows - 1)
             makeNewShape()
         else:
             shapes_CurrentShapeLocation[0] = shapes_CurrentShapeLocation[0] + 1
@@ -134,15 +135,21 @@ def initialiseBlockArray(blockArray):
     for i in range(0, (totalRows * totalCols), 1):
         blockArray.append(0)
 
+def checkForTetris(rowNum):
+    print("Checking for tetris")
+    for i in range(0, totalCols, 1):
+        checkPt = rowNum * totalCols + i
+        if(board_blockLocations[checkPt] == 0): return False
+    print("Tetris in row " + str(rowNum))
+    for j in range(rowNum, 1, -1):
+        for i in range(0, totalCols, 1):
+            board_blockLocations[j * totalCols + i] = board_blockLocations[(j-1) * totalCols + i]
+    printBoard()
+    return True
+
 def printBoard():
-    intBuf = 0
-    strBuf = ""
     for i in range(0, totalRows, 1):
-        intBuf = (i * totalCols)
-        strBuf = str(i) + ":"
-        for j in range(0, totalCols, 1):
-            strBuf = strBuf + str(board_blockLocations[intBuf + j]) 
-        print(strBuf) 
+        print("" + str(board_blockLocations[i * totalCols : i * totalCols + totalCols]))
     print("--------------------------------------------------")
 
 def checkVerticalCollision():
