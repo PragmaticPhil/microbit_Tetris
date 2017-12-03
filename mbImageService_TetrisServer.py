@@ -1,7 +1,6 @@
 from microbit import*
 import radio
 import random
-# rem - use random.choice(shapes)
 
 radio.on()
 radio.config(length=20, queue=12, channel=19, power=6)
@@ -47,15 +46,12 @@ currentAnimationRow = 0
 def makeNewShape():
     global shapes_CurrentShapeType
     global shapes_CurrentShapeLocation
-    shapes_CurrentShapeType         = random.randint(0, len(shapes_defaultMasks) - 1)
-    arbInt = totalCols - shapes_Cols[shapes_CurrentShapeType]
+    shapes_CurrentShapeType         = random.randint(0, 5)
+    #shapes_CurrentShapeType         = 0
     shapes_CurrentShapeLocation[0]  = 0
-    shapes_CurrentShapeLocation[1]  = arbInt
-    #shapes_CurrentShapeLocation[1]  = random.randint(0, totalCols - shapes_Cols[shapes_CurrentShapeType])
-    #print("Shape type = " + str(shapes_CurrentShapeType) + " - (" + str(shapes_CurrentShapeLocation) + ")")
+    shapes_CurrentShapeLocation[1]  = 0
 
 def makeNextFrame():
-    #startTime = 
     moveShapeDown()
     for i in range(0, shapes_Rows[shapes_CurrentShapeType], 1):
         strBuf = makeNextRowCommand(i)
@@ -98,13 +94,14 @@ def moveShapeHorizontally(moveDir):
 def moveShapeDown():
     global currentAnimationRow
     global shapes_CurrentShapeLocation
-    #print("Move shape down")
     currentAnimationRow = currentAnimationRow + 1
     if(currentAnimationRow == 5):
         currentAnimationRow = 0
         if(checkVerticalCollision()):
             printBoard()
-            checkForTetris(totalRows - 1)
+            for i in range(shapes_CurrentShapeLocation[0], totalRows, 1):
+            #for i in range(shapes_CurrentShapeLocation[0], shapes_CurrentShapeLocation[0] + shapes_Rows[shapes_CurrentShapeType]-1, 1):                
+                checkForTetris(i)
             makeNewShape()
         else:
             shapes_CurrentShapeLocation[0] = shapes_CurrentShapeLocation[0] + 1
@@ -132,17 +129,11 @@ def initialiseBlockArray(blockArray):
 
 def checkForTetris(rowNum):
     global board_blockLocations
-    #print("Checking for tetris")
-    for i in range(0, totalCols, 1):
-        checkPt = rowNum * totalCols + i
-        if(board_blockLocations[checkPt] == 0): return False
-    #print("Tetris in row " + str(rowNum))
+    for i in range(rowNum * totalCols, rowNum * totalCols + totalCols, 1):
+        if(board_blockLocations[i] == 0): return False    
+    print("tX1220" + getPaddedRowRefStr(rowNum))
     for j in range(rowNum, 1, -1):
         board_blockLocations[j * totalCols : j * totalCols + totalCols] = board_blockLocations[(j-1) * totalCols : (j-1) * totalCols + totalCols]
-        #for k in range(0, totalCols, 1):
-        #    print("Trying to clear blocks")
-        #    board_blockLocations[j * totalCols + k] = board_blockLocations[(j-1) * totalCols + k]
-    #printBoard()
     return True
 
 
