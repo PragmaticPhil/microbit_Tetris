@@ -7,25 +7,39 @@ radio.config(length=20, queue=12, channel=19, power=6)
 
 global totalRows
 global totalCols
-totalRows = 10
-totalCols = 8
+totalRows = 12
+totalCols = 10
+
+isGameOver = False
 
 shape_Square = (22, 33, 55)
 shape_Long = (444, 555)
-shape_LeftUp = (299, 344, 555)
-shape_RightUp = (992, 443, 555)
-shape_MiddleUp = (929, 434, 555)
-shape_UpSquiggle = (299, 342, 554, 995)
-
-shapes_Rows = (3, 2, 3, 3, 3, 4)
-shapes_Cols = (2, 3, 3, 3, 3, 3)
+shape_squiggel_S_NS = (944, 435, 559)
 
 shapes_defaultMasks = ( shape_Square, 
                         shape_Long, 
-                        shape_LeftUp, 
-                        shape_RightUp, 
-                        shape_MiddleUp, 
-                        shape_UpSquiggle)
+                        (299, 344, 555), 
+                        (992, 443, 555), 
+                        (929, 434, 555), 
+                        shape_squiggel_S_NS    )
+
+#shapes_Masks_East = ( shape_Square, 
+#                        (2, 3 , 3, 5), 
+#                        (24, 35, 39, 59), 
+#                        (29, 39, 34 , 55), 
+#                        (29, 34, 35, 59), 
+#                        (49, 34, 53, 95)    )
+
+#shapes_Masks_South = ( shape_Square, 
+                        #shape_Long, 
+                        #(444, 553, 995), 
+                        #(444, 355, 599), 
+                        #(444, 535, 959), 
+                        #shape_squiggel_S_NS    )
+
+shapes_Rows = (3, 2, 3, 3, 3, 3)
+shapes_Cols = (2, 3, 3, 3, 3, 3)
+
 
 runInit = True
 
@@ -117,7 +131,7 @@ def checkVerticalCollision():
 
     for i in range(0, shapes_Rows[shapes_CurrentShapeType], 1):
         for j in range(0, shapes_Cols[shapes_CurrentShapeType], 1):
-            if(getCharAt(getShapeRowStr(i), j) == "5"):
+            if(getShapeRowStr(i)[j] == "5"):
                 if(board_blockLocations[(i + shapes_CurrentShapeLocation[0]) * totalCols + shapes_CurrentShapeLocation[1] + j] == 1):
                     #boardCharLocation = (i + shapes_CurrentShapeLocation[0]) * totalCols + shapes_CurrentShapeLocation[1] + j
                     #boardCharStr = str(board_blockLocations[boardCharLocation])
@@ -132,21 +146,23 @@ def addShapeToBoard():  # shape has come to rest, now we need to add it to the B
     global board_blockLocations
     for i in range(0, shapes_Rows[shapes_CurrentShapeType], 1):
         for j in range(0, shapes_Cols[shapes_CurrentShapeType], 1):
-            curChar = getCharAt(getShapeRowStr(i), j)
+            curChar = getShapeRowStr(i)[j]
             if(not((curChar == "5") or (curChar == "9"))):
                 board_blockLocations[((shapes_CurrentShapeLocation[0] + i) * totalCols) + (shapes_CurrentShapeLocation[1] + j)] = 1
 
 def getShapeRowStr(rowNum):
     return str(shapes_defaultMasks[shapes_CurrentShapeType][rowNum])
 
-def getCharAt(rowMask, colNum):
-    return (rowMask[colNum])
 
 def printBoard():
     for i in range(0, totalRows, 1):
         print("" + str(board_blockLocations[i * totalCols : i * totalCols + totalCols]))
     print("--------------------------------------------------")
 
+def checkGameOver():
+    for i in range(totalCols):
+        if(board_blockLocations[i + totalCols] == 1): return True
+    return False
 
 while True:
     if(runInit): 
@@ -154,12 +170,15 @@ while True:
         initialiseBlockArray(board_blockLocations)
         runInit = False
         print("init")
-
-    makeNextFrame()
-    sleep(10)
-    
-    if(button_a.was_pressed()):
-        moveShapeHorizontally(-1)
-
-    if(button_b.was_pressed()):
-        moveShapeHorizontally(1)    
+    if(not(isGameOver)):
+        isGameOver = checkGameOver()
+        if (isGameOver):
+            print("GAME OVER")
+        else:
+            timeBeforeMakeFrame = running_time()
+            makeNextFrame()
+            while(  (running_time() - timeBeforeMakeFrame) < 100):
+                if(button_a.was_pressed()):
+                    moveShapeHorizontally(-1)
+                if(button_b.was_pressed()):
+                    moveShapeHorizontally(1)    
