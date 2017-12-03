@@ -14,10 +14,10 @@ totalCols = 8
 
 shape_Square = (22, 33, 55)
 shape_Long = (444, 555)
-shape_LeftUp = (255, 344, 555)
-shape_RightUp = (552, 443, 555)
-shape_MiddleUp = (525, 434, 555)
-shape_UpSquiggle = (255, 342, 554, 995)
+shape_LeftUp = (299, 344, 555)
+shape_RightUp = (992, 443, 555)
+shape_MiddleUp = (929, 434, 555)
+shape_UpSquiggle = (299, 342, 554, 995)
 
 shapes_Rows = (3, 2, 3, 3, 3, 4)
 shapes_Cols = (2, 3, 3, 3, 3, 3)
@@ -54,14 +54,9 @@ def makeNewShape():
     #shapes_CurrentShapeLocation[1]  = random.randint(0, totalCols - shapes_Cols[shapes_CurrentShapeType])
     #print("Shape type = " + str(shapes_CurrentShapeType) + " - (" + str(shapes_CurrentShapeLocation) + ")")
 
-
-
-
 def makeNextFrame():
     #startTime = 
     moveShapeDown()
-    # if animation frame = 0 clear the row above... build a generic clear row function and rem to parametise whether row is being 
-    # cleared cos block has shifted or cos of a tetris... in the case of the latter an animation is triggered in the node. 
     for i in range(0, shapes_Rows[shapes_CurrentShapeType], 1):
         strBuf = makeNextRowCommand(i)
         #print(makeNextRowCommand(i))
@@ -136,33 +131,27 @@ def initialiseBlockArray(blockArray):
         blockArray.append(0)
 
 def checkForTetris(rowNum):
-    print("Checking for tetris")
+    global board_blockLocations
+    #print("Checking for tetris")
     for i in range(0, totalCols, 1):
         checkPt = rowNum * totalCols + i
         if(board_blockLocations[checkPt] == 0): return False
-    print("Tetris in row " + str(rowNum))
+    #print("Tetris in row " + str(rowNum))
     for j in range(rowNum, 1, -1):
-        for i in range(0, totalCols, 1):
-            board_blockLocations[j * totalCols + i] = board_blockLocations[(j-1) * totalCols + i]
-    printBoard()
+        board_blockLocations[j * totalCols : j * totalCols + totalCols] = board_blockLocations[(j-1) * totalCols : (j-1) * totalCols + totalCols]
+        #for k in range(0, totalCols, 1):
+        #    print("Trying to clear blocks")
+        #    board_blockLocations[j * totalCols + k] = board_blockLocations[(j-1) * totalCols + k]
+    #printBoard()
     return True
 
-def printBoard():
-    for i in range(0, totalRows, 1):
-        print("" + str(board_blockLocations[i * totalCols : i * totalCols + totalCols]))
-    print("--------------------------------------------------")
 
 def checkVerticalCollision():
-    isColliding = False
-    # lets firstly see if the shape has just reached the bottom:
     if( (shapes_CurrentShapeLocation[0] + shapes_Rows[shapes_CurrentShapeType] - 1) >= totalRows):
         addShapeToBoard()
         return True
-        
-    return isColliding
-    #   step 1 is find the buffer (5) blocks in the current shape:
+    return False
     
-
 def addShapeToBoard():  # shape has come to rest, now we need to add it to the Board Locations array:
     global board_blockLocations
     for i in range(0, shapes_Rows[shapes_CurrentShapeType], 1):
@@ -173,6 +162,12 @@ def addShapeToBoard():  # shape has come to rest, now we need to add it to the B
                 setBoardBlockLocation(shapes_CurrentShapeLocation[0] + i, shapes_CurrentShapeLocation[1] + j, 1)
 
 
+def printBoard():
+    for i in range(0, totalRows, 1):
+        print("" + str(board_blockLocations[i * totalCols : i * totalCols + totalCols]))
+    print("--------------------------------------------------")
+
+
 while True:
     if(runInit): 
         makeNewShape()
@@ -181,8 +176,7 @@ while True:
         print("init")
 
     makeNextFrame()
-    sleep(100)
-    
+    sleep(10)
     
     if(button_a.was_pressed()):
         moveShapeHorizontally(-1)
