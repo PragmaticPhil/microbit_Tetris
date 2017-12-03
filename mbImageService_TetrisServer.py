@@ -10,7 +10,6 @@ global totalCols
 totalRows = 10
 totalCols = 8
 
-
 shape_Square = (22, 33, 55)
 shape_Long = (444, 555)
 shape_LeftUp = (299, 344, 555)
@@ -30,7 +29,7 @@ shapes_defaultMasks = ( shape_Square,
 
 runInit = True
 
-global board_blockLocations     # NB - we only keep info on settled blocks, not those that are moving.
+global board_blockLocations
 board_blockLocations = []   
 
 global shapes_CurrentShapeType
@@ -47,20 +46,15 @@ def makeNewShape():
     global shapes_CurrentShapeType
     global shapes_CurrentShapeLocation
     shapes_CurrentShapeType         = random.randint(0, 5)
-    #shapes_CurrentShapeType         = 0
     shapes_CurrentShapeLocation[0]  = 0
     shapes_CurrentShapeLocation[1]  = 0
+
 
 def makeNextFrame():
     moveShapeDown()
     for i in range(0, shapes_Rows[shapes_CurrentShapeType], 1):
-        strBuf = makeNextRowCommand(i)
-        #print(makeNextRowCommand(i))
-    #print("----------------------------")
-
-
-def makeNextRowCommand(currentShapeRow):
-    return ("tX120" + str(currentAnimationRow) + getPaddedRowRefStr(shapes_CurrentShapeLocation[0] + currentShapeRow) + getRowMask(currentShapeRow))
+        strBuf = ("tX120" + str(currentAnimationRow) + getPaddedRowRefStr(shapes_CurrentShapeLocation[0] + i) + getRowMask(i))
+        #radio.send("tX120" + str(currentAnimationRow) + getPaddedRowRefStr(shapes_CurrentShapeLocation[0] + i) + getRowMask(i))
 
     
 def getPaddedRowRefStr(rowRef):
@@ -130,11 +124,11 @@ def initialiseBlockArray(blockArray):
 def checkForTetris(rowNum):
     global board_blockLocations
     for i in range(rowNum * totalCols, rowNum * totalCols + totalCols, 1):
-        if(board_blockLocations[i] == 0): return False    
+        if(board_blockLocations[i] == 0): return
+
     print("tX1220" + getPaddedRowRefStr(rowNum))
     for j in range(rowNum, 1, -1):
         board_blockLocations[j * totalCols : j * totalCols + totalCols] = board_blockLocations[(j-1) * totalCols : (j-1) * totalCols + totalCols]
-    return True
 
 
 def checkVerticalCollision():
@@ -142,7 +136,8 @@ def checkVerticalCollision():
         addShapeToBoard()
         return True
     return False
-    
+
+
 def addShapeToBoard():  # shape has come to rest, now we need to add it to the Board Locations array:
     global board_blockLocations
     for i in range(0, shapes_Rows[shapes_CurrentShapeType], 1):
