@@ -138,7 +138,7 @@ def changeShapeOrientation(rotateDir):
     global shapes_defaultMasks
     global shape_Orientation
 
-    shape_Orientation = (shape_Orientation + rotateDir) % 3
+    shape_Orientation = (shape_Orientation + rotateDir) % 4
     shapes_defaultMasks = shapes_AllOrientations[shape_Orientation]
         
         
